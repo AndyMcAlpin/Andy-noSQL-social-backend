@@ -12,7 +12,7 @@ const userController = {
     },
 
     getUserById({ params }, res) {
-        Pizza.findOne({ _id: params.id })
+        User.findOne({ _id: params.id })
     .populate({
         path: 'thoughts',
         select: '-__v'
@@ -68,7 +68,7 @@ const userController = {
     createFriend({ params }, res) {
         User.findOneAndUpdate(
             { _id: params.userId },
-            { $push: { friends: _id } },
+            { $push: { friends: params.friendId } },
             { new: true, runValidators: true }
         )
             .then(dbUserData => {
@@ -84,7 +84,7 @@ const userController = {
     deleteFriend({ params }, res) {
         User.findOneAndUpdate(
             {_id: params.userId },
-            { $pull: { friends: { friendId: params.friendId } } },
+            { $pull: { friends: params.friendId } },
             { new: true }
         )
             .then(dbUserData => res.json(dbUserData))
